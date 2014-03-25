@@ -98,8 +98,8 @@
   } else {
     if (this.document) {
       this.document.addEventListener('DOMContentLoaded', function () {
-        var query = 'script[type=application/brainfuck][id]'
-        var scripts = this.document.querySelectorAll(query)
+        var query = 'script[type="application/brainfuck"][id]'
+        var scripts = this.querySelectorAll(query)
         aryProto.forEach.call(scripts, function (script) {
           var id = script.getAttribute('id')
           this[id] = compile(script.innerHTML)
