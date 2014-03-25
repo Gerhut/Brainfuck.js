@@ -76,13 +76,13 @@
           func = window.capitalize
         } else if (radTypeIt.checked) {
           try {
-            func = window.brainfuck(txtSource.text)
+            func = window.brainfuck(txtSource.value)
           } catch(e) {
             alert(e.message)
           }
         }
         if (typeof func === 'function') {
-          txtOutput.text = func(txtInput.text)
+          txtOutput.value = func(txtInput.value)
         }
       }, false)
     }) ()
