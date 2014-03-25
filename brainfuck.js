@@ -93,7 +93,7 @@
     }
   }
 
-  if (module && module.exports) { // node.js
+  if (typeof module === 'object' && module.exports) { // node.js
     module.exports = compile
   } else {
     if (this.document) {
