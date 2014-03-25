@@ -1,0 +1,25 @@
+{
+  "name": "brainfuck.js",
+  "version": "0.0.0",
+  "description": "Brainfuck compiler by javascript in both browser & node.js",
+  "main": "brainfuck.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Gerhut/brainfuck.js.git"
+  },
+  "keywords": [
+    "brainfuck"
+  ],
+  "author": "Gerhut <Gerhut@GMail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Gerhut/brainfuck.js/issues"
+  },
+  "homepage": "https://github.com/Gerhut/brainfuck.js",
+  "devDependencies": {
+    "mocha": "^1.18.2"
+  }
+}
