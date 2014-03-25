@@ -12,7 +12,6 @@
 
   function Memory(input) {
     input = input || ''
-    this.length = 0
     this.ptr = 0
     this.input = aryProto.slice.call(input)
     this.output = []
