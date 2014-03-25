@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Brainfuck.js</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="jumbotron">
+        <h1>Brainfuck.js</h1>
+        <p>Brainfuck compiler by javascript in both browser &amp; node.js</p>
+      </div>
+      <h2>Try it now!</h2>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Source code</div>
+            <div class="panel-body">
+              <div class="ratio">
+                <label>
+                  <input type="radio" id="radUseScript" name="sourceType" value="useScript" checked>
+                  Use
+                </label>
+              </div>
+              <pre>&lt;script type="application/brainfuck" id="capitalize"&gt;
+  ,----------[----------------------.,----------]
+&lt;/script&gt;</pre>
+              <div class="ratio">
+                <label>
+                  <input type="radio" id="radTypeIt" name="sourceType" value="typeIt">
+                  or type it by yourself
+                </label>
+              </div>
+              <textarea id="txtSource" class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Input</div>
+            <div class="panel-body">
+              <textarea id="txtInput" class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading"><button type="button" id="btnOutput" class="btn btn-primary">Output</button></div>
+            <div class="panel-body">
+              <textarea id="txtOutput" class="form-control" readonly></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="application/brainfuck" id="capitalize">
+      ,----------[----------------------.,----------]
+    </script>
+    <script src="brainfuck.js"></script>
+    <script>
+    (function () {
+      var radUseScript = document.getElementById('radUseScript')
+      var radTypeIt = document.getElementById('radTypeIt')
+      var txtSource = document.getElementById('txtSource')
+      var txtInput = document.getElementById('txtInput')
+      var txtOutput = document.getElementById('txtOutput')
+      var btnOutput = document.getElementById('btnOutput')
+      txtSource.value = ",----------[----------------------.,----------]"
+      txtInput.value = "abcde\n"
+      btnOutput.addEventListener('click', function () {
+        var func
+        if (radUseScript.checked) {
+          func = window.capitalize
+        } else if (radTypeIt.checked) {
+          try {
+            func = window.brainfuck(txtSource.text)
+          } catch(e) {
+            alert(e.message)
+          }
+        }
+        if (typeof func === 'function') {
+          txtOutput.text = func(txtInput.text)
+        }
+      }, false)
+    }) ()
+    </script>
+  </body>
+</html>
