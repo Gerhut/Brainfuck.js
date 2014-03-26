@@ -16,64 +16,79 @@
   }
 
   Memory.prototype = {
-    left: function () {
-      this.ptr = (this.ptr - 1) % MEMORY_LENGTH
+    '<': function (n) {
+      this.ptr = (this.ptr - n) % MEMORY_LENGTH
     },
-    right: function () {
-      this.ptr = (this.ptr + 1) % MEMORY_LENGTH
+    '>': function (n) {
+      this.ptr = (this.ptr + n) % MEMORY_LENGTH
     },
-    add: function () {
+    '+': function (n) {
       var value = this[this.ptr]
       if (isUndef(value))
-        this[this.ptr] = 1
+        this[this.ptr] = n
       else
-        this[this.ptr] = (value + 1) % UNIT_LENGTH
+        this[this.ptr] = (value + n) % UNIT_LENGTH
     },
-    minus: function () {
+    '-': function (n) {
       var value = this[this.ptr]
       if (isUndef(value))
-        this[this.ptr] = -1
+        this[this.ptr] = -n
       else
-        this[this.ptr] = (value - 1) % UNIT_LENGTH
+        this[this.ptr] = (value - n) % UNIT_LENGTH
     },
-    write: function () {
-      this.output.push(String.fromCharCode(this[this.ptr]))
+    ',': function (n) {
+      this[this.ptr] = this.input
+                           .splice(0, n)[n - 1].charCodeAt(0) % UNIT_LENGTH
     },
-    read: function () {
-      this[this.ptr] = this.input.shift().charCodeAt(0) % UNIT_LENGTH
+    '.': function (n) {
+      var value = String.fromCharCode(this[this.ptr])
+      while (n--) {
+        this.output.push(value)
+      }
     },
-    notZero: function () {
+    '!0': function () {
       return (this[this.ptr] !== 0)
-    }
+    },
+    // following 2 is used for filter
+    '[': null,
+    ']': null
   }
 
   function compile(source) {
     var header = 'var Memory = this;'
                + 'return function (input) {'
-               + 'var mem = new Memory(input);'
-    var body = aryProto.map.call(source, function (symbol) {
-      switch(symbol) {
-        case '<':
-          return 'mem.left();'
-        case '>':
-          return 'mem.right();'
-        case '+':
-          return 'mem.add();'
-        case '-':
-          return 'mem.minus();'
-        case ',':
-          return 'mem.read();'
-        case '.':
-          return 'mem.write();'
-        case '[':
-          return 'while (mem.notZero()) {'
-        case ']':
+               +   'var mem = new Memory(input);'
+    var footer =   'return mem.output.join("");'
+               + '}'
+    var memProto = Memory.prototype
+    var body = aryProto.filter.call(source,
+      function (symbol) {
+        return symbol in memProto
+      }).reduceRight(function (merged, symbol) {
+        if (typeof memProto[symbol] === 'function') { // not '[' or ']'
+          if (merged[0] && merged[0].symbol === symbol) { // same symbol
+            merged[0].count += 1
+          } else { // not same symbol
+            merged.unshift({
+              symbol: symbol,
+              count: 1
+            })
+          }
+        } else { // '[' or ']'
+          merged.unshift(symbol)
+        }
+        return merged
+      }, []).map(function (symbol) {
+        if (symbol.count) {
+          return 'mem["' + symbol.symbol + '"](' + symbol.count + ');'
+        } else if (symbol === '[') {
+          return 'while(mem["!0"]()){'
+        } else if (symbol === ']') {
           return '}'
-        default:
+        } else {
           return ''
-      }
-    }).join('')
-    var footer = 'return mem.output.join("");}'
+        }
+      }).join('')
     return Function(header + body + footer).call(Memory)
   }
 
