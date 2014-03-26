@@ -16,33 +16,33 @@
   }
 
   Memory.prototype = {
-    left: function () {
+    '<': function () {
       this.ptr = (this.ptr - 1) % MEMORY_LENGTH
     },
-    right: function () {
+    '>': function () {
       this.ptr = (this.ptr + 1) % MEMORY_LENGTH
     },
-    add: function () {
+    '+': function () {
       var value = this[this.ptr]
       if (isUndef(value))
         this[this.ptr] = 1
       else
         this[this.ptr] = (value + 1) % UNIT_LENGTH
     },
-    minus: function () {
+    '-': function () {
       var value = this[this.ptr]
       if (isUndef(value))
         this[this.ptr] = -1
       else
         this[this.ptr] = (value - 1) % UNIT_LENGTH
     },
-    write: function () {
-      this.output.push(String.fromCharCode(this[this.ptr]))
-    },
-    read: function () {
+    ',': function () {
       this[this.ptr] = this.input.shift().charCodeAt(0) % UNIT_LENGTH
     },
-    notZero: function () {
+    '.': function () {
+      this.output.push(String.fromCharCode(this[this.ptr]))
+    },
+    '!0': function () {
       return (this[this.ptr] !== 0)
     }
   }
@@ -54,19 +54,14 @@
     var body = aryProto.map.call(source, function (symbol) {
       switch(symbol) {
         case '<':
-          return 'mem.left();'
         case '>':
-          return 'mem.right();'
         case '+':
-          return 'mem.add();'
         case '-':
-          return 'mem.minus();'
         case ',':
-          return 'mem.read();'
         case '.':
-          return 'mem.write();'
+          return 'mem["' + symbol + '"]();'
         case '[':
-          return 'while (mem.notZero()) {'
+          return 'while (mem["!0"]()) {'
         case ']':
           return '}'
         default:
