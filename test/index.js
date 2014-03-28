@@ -1,11 +1,12 @@
+/* jshint asi: true */
 var assert = require('assert')
 var brainfuck = require('../src/brainfuck')
 
 describe('brainfuck.js', function () {
   it('should run "Hello World!" successfully.', function () {
-    var source = "++++++++++[>+++++++>++++++++++>+++>+<<<<-]"
-               + ">++.>+.+++++++..+++.>++.<<+++++++++++++++."
-               + ">.+++.------.--------.>+.>."
+    var source = "++++++++++[>+++++++>++++++++++>+++>+<<<<-]" +
+                 ">++.>+.+++++++..+++.>++.<<+++++++++++++++." +
+                 ">.+++.------.--------.>+.>."
 
     assert.equal(brainfuck(source)(), 'Hello World!\n')
   })
@@ -26,9 +27,9 @@ describe('brainfuck.js', function () {
     assert.equal(brainfuck(source)(input), (num1 + num2).toString() +'\n')
   })
   it('should run multiply program successfully.', function () {
-    var source = ",>,,>++++++++[<------<------>>-]"
-               + "<<[>[>+>+<<-]>>[<<+>>-]<<<-]"
-               + ">>>++++++[<++++++++>-],<.>."
+    var source = ",>,,>++++++++[<------<------>>-]" +
+                 "<<[>[>+>+<<-]>>[<<+>>-]<<<-]" +
+                 ">>>++++++[<++++++++>-],<.>."
     var num1 = Math.floor(Math.random() * 9 + 1)
     var num2 = Math.floor(Math.random() * (10 / num1))
     var input = num1 + '*' + num2 + '\n'

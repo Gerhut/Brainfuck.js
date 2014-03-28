@@ -1,4 +1,7 @@
+/* jshint asi: true */
 (function () {
+  'use strict';
+
   var MEMORY_LENGTH = 256
   var UNIT_LENGTH = 256
 
@@ -65,11 +68,11 @@
   }
 
   function compile(source) {
-    var header = 'return function(i){'
-               +   'with(new M(i)){'
-    var footer =   'return g()'
-               +   '}'
-               + '}'
+    var header = 'return function(i){' +
+                   'with(new M(i)){'
+    var footer =   'return g()' +
+                   '}' +
+                 '}'
     var body = aryProto.filter.call(source,
       function (symbol) {
         return symbol in symbleFunc
@@ -98,16 +101,12 @@
           return ''
         }
       }).join('')
-    return Function('M', header + body + footer)(Memory)
+    /* jshint evil: true */
+    return new Function('M', header + body + footer)(Memory)
   }
 
   if (typeof module === 'object' && module.exports) { // node.js
     module.exports = compile
-    if (require.main === module) {
-      console.log(compile("++++++++++[>+++++++>++++++++++>+++>+<<<<-]"
-            + ">++.>+.+++++++..+++.>++.<<+++++++++++++++."
-            + ">.+++.------.--------.>+.>.")())
-    }
   } else {
     if (this.document) {
       this.document.addEventListener('DOMContentLoaded', function () {
