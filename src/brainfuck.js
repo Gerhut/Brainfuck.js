@@ -5,6 +5,7 @@
   var MEMORY_LENGTH = 256
   var UNIT_LENGTH = 256
 
+  var global = this
   var aryProto = Array.prototype
 
   function isUndef(x) {
@@ -108,8 +109,8 @@
   if (typeof module === 'object' && module.exports) { // node.js
     module.exports = compile
   } else {
-    if (this.document) {
-      this.document.addEventListener('DOMContentLoaded', function () {
+    if (global.document) {
+      global.document.addEventListener('DOMContentLoaded', function () {
         var query = 'script[type="application/brainfuck"][id]'
         var scripts = this.querySelectorAll(query)
         aryProto.forEach.call(scripts, function (script) {
