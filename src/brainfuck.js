@@ -114,10 +114,10 @@
         var scripts = this.querySelectorAll(query)
         aryProto.forEach.call(scripts, function (script) {
           var id = script.getAttribute('id')
-          this[id] = compile(script.innerHTML)
+          global[id] = compile(script.innerHTML)
         })
       }, false)
     }
-    this.brainfuck = compile
+    global.brainfuck = compile
   }
 }) (this)
