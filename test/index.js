@@ -1,5 +1,5 @@
 var assert = require('assert')
-var brainfuck = require('./brainfuck')
+var brainfuck = require('../src/brainfuck')
 
 describe('brainfuck.js', function () {
   it('should run "Hello World!" successfully.', function () {
