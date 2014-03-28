@@ -1,11 +1,10 @@
 /* jshint asi: true */
-(function () {
+(function (global) {
   'use strict';
 
   var MEMORY_LENGTH = 256
   var UNIT_LENGTH = 256
 
-  var global = this
   var aryProto = Array.prototype
 
   function isUndef(x) {
@@ -121,4 +120,4 @@
     }
     this.brainfuck = compile
   }
-}) ()
+}) (this)
